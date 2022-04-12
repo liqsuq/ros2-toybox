@@ -1,0 +1,3 @@
+# ros2-tracing
+
+sudo apt install lttng-tools libnttng-ust-dev python3-babeltrace python3-lttng lttng-modules-dkms

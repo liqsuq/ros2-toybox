@@ -1,0 +1,7 @@
+[submodule "src/ros2_tracing"]
+	path = src/ros2_tracing
+	url = https://gitlab.com/ros-tracing/ros2_tracing.git
+[submodule "src/performance_test"]
+	path = src/performance_test
+	url = https://gitlab.com/ApexAI/performance_test.git
+	branch = galactic
