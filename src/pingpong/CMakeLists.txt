@@ -7,9 +7,35 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(pingpong_interfaces REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
+
+add_executable(ping_obsolete src/ping_obsolete.cpp)
+ament_target_dependencies(ping_obsolete rclcpp pingpong_interfaces)
+add_executable(pong_obsolete src/pong_obsolete.cpp)
+ament_target_dependencies(pong_obsolete rclcpp pingpong_interfaces)
+
+add_executable(ping_timer src/ping_timer.cpp)
+ament_target_dependencies(ping_timer rclcpp pingpong_interfaces)
+add_executable(pong_timer src/pong_timer.cpp)
+ament_target_dependencies(pong_timer rclcpp pingpong_interfaces)
+
+add_executable(ping_classify src/ping_classify.cpp)
+ament_target_dependencies(ping_classify rclcpp pingpong_interfaces)
+add_executable(pong_classify src/pong_classify.cpp)
+ament_target_dependencies(pong_classify rclcpp pingpong_interfaces)
+
+install(
+  TARGETS
+    ping_obsolete pong_obsolete
+    ping_timer pong_timer
+    ping_classify pong_classify
+  DESTINATION
+    lib/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
