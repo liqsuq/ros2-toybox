@@ -2,18 +2,17 @@
 #include <time.h>
 
 #include "rclcpp/rclcpp.hpp"
-#include "pingpong_interfaces/msg/ping.hpp"
-#include "pingpong_interfaces/msg/pong.hpp"
+#include "pingpong/msg/ping.hpp"
+#include "pingpong/msg/pong.hpp"
 
 rclcpp::Node::SharedPtr node = nullptr;
-rclcpp::Publisher<pingpong_interfaces::msg::Ping>::SharedPtr
-  publisher = nullptr;
-pingpong_interfaces::msg::Ping message;
+rclcpp::Publisher<pingpong::msg::Ping>::SharedPtr publisher = nullptr;
+pingpong::msg::Ping message;
 
 struct timespec time0 = {0, 0};
 struct timespec time3 = {0, 0};
 
-void callback(const pingpong_interfaces::msg::Pong::SharedPtr msg) {
+void callback(const pingpong::msg::Pong::SharedPtr msg) {
   clock_gettime(CLOCK_MONOTONIC, &time3);
   RCLCPP_INFO(node->get_logger(), "t0: %ld",
     1000000000 * msg->t0_sec + msg->t0_nsec);
@@ -40,11 +39,11 @@ int main(int argc, char **argv) {
 
   // ping publisher
   publisher = node->
-    create_publisher<pingpong_interfaces::msg::Ping>("ping", 10);
+    create_publisher<pingpong::msg::Ping>("ping", 10);
 
   // pong subscription
   auto subscription = node->
-    create_subscription<pingpong_interfaces::msg::Pong>("pong", 10, callback);
+    create_subscription<pingpong::msg::Pong>("pong", 10, callback);
 
   auto timer = node->create_wall_timer(1s, publish);
   

@@ -2,20 +2,20 @@
 #include <time.h>
 
 #include "rclcpp/rclcpp.hpp"
-#include "pingpong_interfaces/msg/ping.hpp"
-#include "pingpong_interfaces/msg/pong.hpp"
+#include "pingpong/msg/ping.hpp"
+#include "pingpong/msg/pong.hpp"
 
 class PongNode : public rclcpp::Node {
 public:
   PongNode() : Node("pong") {
     using std::placeholders::_1;
-    pub_ = this->create_publisher<pingpong_interfaces::msg::Pong>("pong", 10);
-    sub_ = this->create_subscription<pingpong_interfaces::msg::Ping>(
+    pub_ = this->create_publisher<pingpong::msg::Pong>("pong", 10);
+    sub_ = this->create_subscription<pingpong::msg::Ping>(
       "ping", 10, std::bind(&PongNode::topic_callback, this, _1));
   }
 
 private:
-  void topic_callback(const pingpong_interfaces::msg::Ping::SharedPtr msg) {
+  void topic_callback(const pingpong::msg::Ping::SharedPtr msg) {
     clock_gettime(CLOCK_MONOTONIC, &time1_);
     msg_.t1_sec = (long)time1_.tv_sec;
     msg_.t1_nsec = (long)time1_.tv_nsec;
@@ -29,9 +29,9 @@ private:
 
     pub_->publish(msg_);
   }
-  rclcpp::Publisher<pingpong_interfaces::msg::Pong>::SharedPtr pub_;
-  rclcpp::Subscription<pingpong_interfaces::msg::Ping>::SharedPtr sub_;
-  pingpong_interfaces::msg::Pong msg_;
+  rclcpp::Publisher<pingpong::msg::Pong>::SharedPtr pub_;
+  rclcpp::Subscription<pingpong::msg::Ping>::SharedPtr sub_;
+  pingpong::msg::Pong msg_;
   struct timespec time1_ = {0, 0};
   struct timespec time2_ = {0, 0};
 };
