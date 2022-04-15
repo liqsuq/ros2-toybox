@@ -41,7 +41,10 @@ private:
 
 int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<PongNode>());
+  rclcpp::executors::SingleThreadedExecutor executor;
+  auto pong_node = std::make_shared<PongNode>();
+  executor.add_node(pong_node);
+  executor.spin();
   rclcpp::shutdown();
   return 0;
 }

@@ -5,6 +5,8 @@
 #include "pingpong/msg/ping.hpp"
 #include "pingpong/msg/pong.hpp"
 
+#define S2NS 1000000000
+
 rclcpp::Node::SharedPtr node = nullptr;
 rclcpp::Publisher<pingpong::msg::Ping>::SharedPtr publisher = nullptr;
 pingpong::msg::Ping message;
@@ -14,14 +16,11 @@ struct timespec time3 = {0, 0};
 
 void callback(const pingpong::msg::Pong::SharedPtr msg) {
   clock_gettime(CLOCK_MONOTONIC, &time3);
-  RCLCPP_INFO(node->get_logger(), "t0: %ld",
-    1000000000 * msg->t0_sec + msg->t0_nsec);
-  RCLCPP_INFO(node->get_logger(), "t1: %ld",
-    1000000000 * msg->t1_sec + msg->t1_nsec);
-  RCLCPP_INFO(node->get_logger(), "t2: %ld",
-    1000000000 * msg->t2_sec + msg->t2_nsec);
+  RCLCPP_INFO(node->get_logger(), "t0: %ld", msg->t0_sec*S2NS + msg->t0_nsec);
+  RCLCPP_INFO(node->get_logger(), "t1: %ld", msg->t1_sec*S2NS + msg->t1_nsec);
+  RCLCPP_INFO(node->get_logger(), "t2: %ld", msg->t2_sec*S2NS + msg->t2_nsec);
   RCLCPP_INFO(node->get_logger(), "t3: %ld",
-    (long)(1000000000 * time3.tv_sec + time3.tv_nsec));
+    (long)(time3.tv_sec*S2NS + time3.tv_nsec));
 }
 
 void publish(void) {

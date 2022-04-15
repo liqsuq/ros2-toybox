@@ -2,6 +2,8 @@
 #include "pingpong/msg/ping.hpp"
 #include "pingpong/msg/pong.hpp"
 
+#define S2NS 1000000000
+
 rclcpp::Node::SharedPtr node = nullptr;
 rclcpp::Publisher<pingpong::msg::Pong>::SharedPtr publisher = nullptr;
 pingpong::msg::Pong message;
@@ -16,6 +18,7 @@ void callback(const pingpong::msg::Ping::SharedPtr msg) {
 
   message.t0_sec = msg->t0_sec;
   message.t0_nsec = msg->t0_nsec;
+  RCLCPP_INFO(node->get_logger(), "t0: %ld", msg->t0_sec*S2NS + msg->t0_nsec);
 
   clock_gettime(CLOCK_MONOTONIC, &time2);
   message.t2_sec = (long)time2.tv_sec;

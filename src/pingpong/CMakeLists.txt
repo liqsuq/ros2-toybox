@@ -9,10 +9,6 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
-#find_package(pingpong_interfaces REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Ping.msg"
@@ -41,11 +37,19 @@ add_executable(pong_classify src/pong_classify.cpp)
 ament_target_dependencies(pong_classify rclcpp)
 rosidl_target_interfaces(pong_classify ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
+add_executable(ping_executor src/ping_executor.cpp)
+ament_target_dependencies(ping_executor rclcpp)
+rosidl_target_interfaces(ping_executor ${PROJECT_NAME} "rosidl_typesupport_cpp")
+add_executable(pong_executor src/pong_executor.cpp)
+ament_target_dependencies(pong_executor rclcpp)
+rosidl_target_interfaces(pong_executor ${PROJECT_NAME} "rosidl_typesupport_cpp")
+
 install(
   TARGETS
     ping_obsolete pong_obsolete
     ping_timer pong_timer
     ping_classify pong_classify
+    ping_executor pong_executor
   DESTINATION
     lib/${PROJECT_NAME}
 )
