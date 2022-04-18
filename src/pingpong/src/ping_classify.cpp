@@ -39,8 +39,8 @@ private:
   rclcpp::Publisher<pingpong::msg::Ping>::SharedPtr pub_;
   rclcpp::Subscription<pingpong::msg::Pong>::SharedPtr sub_;
   pingpong::msg::Ping msg_;
-  struct timespec time0_ = {0, 0};
-  struct timespec time3_ = {0, 0};
+  struct timespec time0_;
+  struct timespec time3_;
 };
 
 int main(int argc, char **argv) {

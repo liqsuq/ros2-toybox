@@ -8,8 +8,8 @@ rclcpp::Node::SharedPtr node = nullptr;
 rclcpp::Publisher<pingpong::msg::Pong>::SharedPtr publisher = nullptr;
 pingpong::msg::Pong message;
 
-struct timespec time1 = {0, 0};
-struct timespec time2 = {0, 0};
+struct timespec time1;
+struct timespec time2;
 
 void callback(const pingpong::msg::Ping::SharedPtr msg) {
   clock_gettime(CLOCK_MONOTONIC, &time1);

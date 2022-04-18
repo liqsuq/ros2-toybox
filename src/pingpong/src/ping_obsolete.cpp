@@ -8,7 +8,7 @@
 #define S2NS 1000000000
 
 rclcpp::Node::SharedPtr node = nullptr;
-struct timespec time3 = {0, 0};
+struct timespec time3;
 
 void callback(const pingpong::msg::Pong::SharedPtr msg) {
   clock_gettime(CLOCK_MONOTONIC, &time3);
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
   //RCLCPP_INFO(node->get_logger(), "reqtime: %ld", 1000000000 * reqtime.tv_sec + reqtime.tv_nsec); 
   //RCLCPP_INFO(node->get_logger(), "now:     %ld", now.nanoseconds()); 
 
-  struct timespec time0 = {0, 0};
+  struct timespec time0;
   while (rclcpp::ok()) {
     clock_gettime(CLOCK_MONOTONIC, &time0);
     message.t0_sec = (long)time0.tv_sec;

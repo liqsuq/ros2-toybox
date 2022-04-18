@@ -26,7 +26,7 @@ private:
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Publisher<pingpong::msg::Ping>::SharedPtr pub_;
   pingpong::msg::Ping msg_;
-  struct timespec time0_ = {0, 0};
+  struct timespec time0_;
 };
 
 class PingSubNode : public rclcpp::Node {
@@ -46,7 +46,7 @@ private:
       (long)(time3_.tv_sec*S2NS + time3_.tv_nsec));
   }
   rclcpp::Subscription<pingpong::msg::Pong>::SharedPtr sub_;
-  struct timespec time3_ = {0, 0};
+  struct timespec time3_;
 };
 
 int main(int argc, char **argv) {
