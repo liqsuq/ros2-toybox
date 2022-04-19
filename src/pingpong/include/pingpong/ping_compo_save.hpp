@@ -13,6 +13,7 @@ public:
   PINGPONG_PUBLIC PingPubNode(rclcpp::NodeOptions options);
 
 private:
+  void callback();
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Publisher<pingpong::msg::Ping>::SharedPtr pub_;
   pingpong::msg::Ping msg_;
@@ -24,6 +25,7 @@ public:
   PINGPONG_PUBLIC PingSubNode(rclcpp::NodeOptions options);
 
 private:
+  void callback(const pingpong::msg::Pong::SharedPtr msg);
   rclcpp::Subscription<pingpong::msg::Pong>::SharedPtr sub_;
   struct timespec time3_;
 };

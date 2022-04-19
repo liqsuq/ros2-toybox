@@ -13,6 +13,7 @@ public:
   PINGPONG_PUBLIC PongNode(rclcpp::NodeOptions options);
 
 private:
+  void callback(const pingpong::msg::Ping::SharedPtr msg);
   rclcpp::Publisher<pingpong::msg::Pong>::SharedPtr pub_;
   rclcpp::Subscription<pingpong::msg::Ping>::SharedPtr sub_;
   pingpong::msg::Pong msg_;
