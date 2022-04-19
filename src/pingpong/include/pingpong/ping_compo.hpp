@@ -6,13 +6,32 @@
 #include "pingpong/msg/pong.hpp"
 #include "pingpong/visibility.h"
 
+#define PINGPONG_COUNT 10
+
 namespace pingpong {
+
+class PingNode : public rclcpp::Node {
+public:
+  PINGPONG_PUBLIC PingNode(rclcpp::NodeOptions options);
+
+private:
+  int count_ = PINGPONG_COUNT;
+  int i_ = 0;
+  rclcpp::TimerBase::SharedPtr timer_;
+  rclcpp::Publisher<pingpong::msg::Ping>::SharedPtr pub_;
+  rclcpp::Subscription<pingpong::msg::Pong>::SharedPtr sub_;
+  pingpong::msg::Ping msg_buf_;
+  struct timespec time0_;
+  struct timespec time3_;
+};
 
 class PingPubNode : public rclcpp::Node {
 public:
   PINGPONG_PUBLIC PingPubNode(rclcpp::NodeOptions options);
 
 private:
+  int count_ = PINGPONG_COUNT;
+  int i_ = 0;
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Publisher<pingpong::msg::Ping>::SharedPtr pub_;
   pingpong::msg::Ping msg_;

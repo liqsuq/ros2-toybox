@@ -29,10 +29,7 @@ add_library(ping_compo SHARED src/ping_compo.cpp)
 target_compile_definitions(ping_compo PRIVATE "PINGPONG_DLL")
 ament_target_dependencies(ping_compo rclcpp rclcpp_components)
 rosidl_target_interfaces(ping_compo ${PROJECT_NAME} "rosidl_typesupport_cpp")
-rclcpp_components_register_nodes(ping_compo
-  "pingpong::PingPubNode"
-  "pingpong::PingSubNode"
-)
+rclcpp_components_register_nodes(ping_compo "pingpong::PingNode")
 
 add_library(pong_compo SHARED src/pong_compo.cpp)
 target_compile_definitions(pong_compo PRIVATE "PINGPONG_DLL")

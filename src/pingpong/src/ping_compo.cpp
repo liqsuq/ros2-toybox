@@ -10,22 +10,20 @@
 
 #define S2NS 1000000000
 
-pingpong::PingPubNode::PingPubNode(rclcpp::NodeOptions opts)
-: Node("ping_pub", opts) {
+pingpong::PingNode::PingNode(rclcpp::NodeOptions opts) : Node("ping", opts) {
   using namespace std::chrono_literals;
   pub_ = this->create_publisher<pingpong::msg::Ping>("ping", 10);
   timer_ = this->create_wall_timer(1s,
   [this] {
-    clock_gettime(CLOCK_MONOTONIC, &time0_);
-    msg_.t0_sec = (long)time0_.tv_sec;
-    msg_.t0_nsec = (long)time0_.tv_nsec;
-    pub_->publish(msg_);
+    // if(i_++ < count_) {
+      clock_gettime(CLOCK_MONOTONIC, &time0_);
+      msg_buf_.t0_sec = (long)time0_.tv_sec;
+      msg_buf_.t0_nsec = (long)time0_.tv_nsec;
+      pub_->publish(msg_buf_);
+    // } else {
+    //   timer_->cancel();
+    // }
   });
-}
-
-pingpong::PingSubNode::PingSubNode(rclcpp::NodeOptions opts)
-: Node("ping_sub", opts) {
-  using std::placeholders::_1;
   sub_ = this->create_subscription<pingpong::msg::Pong>("pong", 10,
   [this](pingpong::msg::Pong::SharedPtr msg) {
     clock_gettime(CLOCK_MONOTONIC, &time3_);
@@ -40,5 +38,4 @@ pingpong::PingSubNode::PingSubNode(rclcpp::NodeOptions opts)
   });
 }
 
-RCLCPP_COMPONENTS_REGISTER_NODE(pingpong::PingPubNode)
-RCLCPP_COMPONENTS_REGISTER_NODE(pingpong::PingSubNode)
+RCLCPP_COMPONENTS_REGISTER_NODE(pingpong::PingNode)
