@@ -36,18 +36,21 @@ int main(int argc, char **argv) {
     create_subscription<pingpong::msg::Pong>("pong", 10, callback);
 
   // time measurement test //
-  //struct timespec reqtime = {0, 0};
-  //rclcpp::Clock steady_clock_ros(RCL_STEADY_TIME);
-  //
-  //auto t0 = std::chrono::steady_clock::now();
-  //clock_gettime(CLOCK_MONOTONIC, &reqtime);
-  //auto now = steady_clock_ros.now();
-  //
-  //auto nanosec =
-  //  std::chrono::duration_cast<nanoseconds>(t0.time_since_epoch());
-  //RCLCPP_INFO(node->get_logger(), "t0:      %ld", nanosec.count());
-  //RCLCPP_INFO(node->get_logger(), "reqtime: %ld", 1000000000 * reqtime.tv_sec + reqtime.tv_nsec); 
-  //RCLCPP_INFO(node->get_logger(), "now:     %ld", now.nanoseconds()); 
+  #if 1
+  struct timespec reqtime = {0, 0};
+  rclcpp::Clock steady_clock_ros(RCL_STEADY_TIME);
+  
+  auto t0 = std::chrono::steady_clock::now();
+  clock_gettime(CLOCK_MONOTONIC, &reqtime);
+  auto now = steady_clock_ros.now();
+  
+  auto nanosec =
+    std::chrono::duration_cast<std::chrono::nanoseconds>(t0.time_since_epoch());
+  RCLCPP_INFO(node->get_logger(), "t0:      %ld", nanosec.count());
+  RCLCPP_INFO(node->get_logger(),
+    "reqtime: %ld", 1000000000 * reqtime.tv_sec + reqtime.tv_nsec); 
+  RCLCPP_INFO(node->get_logger(), "now:     %ld", now.nanoseconds()); 
+  #endif
 
   struct timespec time0;
   while (rclcpp::ok()) {

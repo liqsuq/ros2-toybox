@@ -37,6 +37,12 @@ ament_target_dependencies(pong_compo rclcpp rclcpp_components)
 rosidl_target_interfaces(pong_compo ${PROJECT_NAME} "rosidl_typesupport_cpp")
 rclcpp_components_register_nodes(pong_compo "pingpong::PongNode")
 
+add_library(timer_compo SHARED src/timer_compo.cpp)
+target_compile_definitions(timer_compo PRIVATE "PINGPONG_DLL")
+ament_target_dependencies(timer_compo rclcpp rclcpp_components)
+rosidl_target_interfaces(timer_compo ${PROJECT_NAME} "rosidl_typesupport_cpp")
+rclcpp_components_register_nodes(timer_compo "pingpong::TimerNode")
+
 add_executable(ping_obsolete src/ping_obsolete.cpp)
 ament_target_dependencies(ping_obsolete rclcpp)
 rosidl_target_interfaces(ping_obsolete ${PROJECT_NAME} "rosidl_typesupport_cpp")
@@ -72,9 +78,13 @@ add_executable(pong_compose src/pong_compose.cpp)
 target_link_libraries(pong_compose pong_compo)
 ament_target_dependencies(pong_compose rclcpp)
 
+add_executable(timer_compose src/timer_compose.cpp)
+target_link_libraries(timer_compose timer_compo)
+ament_target_dependencies(timer_compose rclcpp)
+
 ament_export_include_directories(include)
 
-ament_export_libraries(ping_compo pong_compo)
+ament_export_libraries(ping_compo pong_compo timer_compo)
 
 install(
   DIRECTORY include/pingpong
@@ -83,7 +93,7 @@ install(
 
 install(
   TARGETS
-    ping_compo pong_compo
+    ping_compo pong_compo timer_compo
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
@@ -96,6 +106,7 @@ install(
     ping_classify pong_classify
     ping_executor pong_executor
     ping_compose pong_compose
+    timer_compose
   DESTINATION
     lib/${PROJECT_NAME}
 )

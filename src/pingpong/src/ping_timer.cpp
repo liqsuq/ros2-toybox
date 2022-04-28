@@ -14,7 +14,7 @@ pingpong::msg::Ping message;
 struct timespec time0;
 struct timespec time3;
 
-void callback(const pingpong::msg::Pong::SharedPtr msg) {
+void topic_callback(const pingpong::msg::Pong::SharedPtr msg) {
   clock_gettime(CLOCK_MONOTONIC, &time3);
   RCLCPP_INFO(node->get_logger(), "t0: %ld", msg->t0_sec*S2NS + msg->t0_nsec);
   RCLCPP_INFO(node->get_logger(), "t1: %ld", msg->t1_sec*S2NS + msg->t1_nsec);
@@ -23,7 +23,7 @@ void callback(const pingpong::msg::Pong::SharedPtr msg) {
     (long)(time3.tv_sec*S2NS + time3.tv_nsec));
 }
 
-void publish(void) {
+void timer_callback(void) {
   clock_gettime(CLOCK_MONOTONIC, &time0);
   message.t0_sec = (long)time0.tv_sec;
   message.t0_nsec = (long)time0.tv_nsec;
@@ -42,9 +42,9 @@ int main(int argc, char **argv) {
 
   // pong subscription
   auto subscription = node->
-    create_subscription<pingpong::msg::Pong>("pong", 10, callback);
+    create_subscription<pingpong::msg::Pong>("pong", 10, topic_callback);
 
-  auto timer = node->create_wall_timer(1s, publish);
+  auto timer = node->create_wall_timer(1s, timer_callback);
   
   rclcpp::spin(node);  
   rclcpp::shutdown();
